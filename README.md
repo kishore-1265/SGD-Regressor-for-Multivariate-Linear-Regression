@@ -17,14 +17,70 @@ To write a program to predict the price of the house and number of occupants in 
 ```
 /*
 Program to implement the multivariate linear regression model for predicting the price of the house and number of occupants in the house with SGD regressor.
-Developed by: 
-RegisterNumber:  
+Developed by: KISHORE R
+RegisterNumber:  25011776
 */
+
+/*
+Program to implement the multivariate linear regression model for predicting the price of the house and number of occupants in the house with SGD regressor.
+Developed by: A.Abinesh
+RegisterNumber:  25017255
+/*
+import numpy as np
+from sklearn.datasets import fetch_california_housing
+from sklearn.linear_model import SGDRegressor
+from sklearn.multioutput import MultiOutputRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import StandardScaler
+
+# Load California housing dataset
+data = fetch_california_housing()
+
+# Features: take first 3 columns
+X = data.data[:, :3]
+
+# Targets: original target + column 6
+Y = np.column_stack((data.target, data.data[:, 6]))
+
+# Split data into training and testing sets
+X_train, X_test, Y_train, Y_test = train_test_split(
+    X, Y, test_size=0.2, random_state=42
+)
+
+# Standardize features and targets
+scaler_X = StandardScaler()
+scaler_Y = StandardScaler()
+
+X_train = scaler_X.fit_transform(X_train)
+X_test = scaler_X.transform(X_test)
+Y_train = scaler_Y.fit_transform(Y_train)
+Y_test = scaler_Y.transform(Y_test)
+
+# Multi-output regression using SGD
+sgd = SGDRegressor(max_iter=1000, tol=1e-3)
+multi_output_sgd = MultiOutputRegressor(sgd)
+multi_output_sgd.fit(X_train, Y_train)
+
+# Predictions
+Y_pred = multi_output_sgd.predict(X_test)
+
+# Inverse transform to original scale
+Y_pred = scaler_Y.inverse_transform(Y_pred)
+Y_test = scaler_Y.inverse_transform(Y_test)
+
+# Evaluate
+mse = mean_squared_error(Y_test, Y_pred)
+print("Mean Square Error:", mse)
+print("\nPredictions:\n", Y_pred[:5])
+
+
 ```
 
 ## Output:
-![multivariate linear regression model for predicting the price of the house and number of occupants in the house](sam.png)
+Mean Square Error: 2.5806778872376523
 
+Predictions: [[ 1.06876354 35.74028704] [ 1.5082597 35.76001752] [ 2.29515115 35.37281317] [ 2.7109513 35.51229013] [ 2.09311597 35.65623343]]
 
 ## Result:
 Thus the program to implement the multivariate linear regression model for predicting the price of the house and number of occupants in the house with SGD regressor is written and verified using python programming.
