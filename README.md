@@ -21,11 +21,7 @@ Developed by: KISHORE R
 RegisterNumber:  25011776
 */
 
-/*
-Program to implement the multivariate linear regression model for predicting the price of the house and number of occupants in the house with SGD regressor.
-Developed by: A.Abinesh
-RegisterNumber:  25017255
-/*
+
 import numpy as np
 from sklearn.datasets import fetch_california_housing
 from sklearn.linear_model import SGDRegressor
